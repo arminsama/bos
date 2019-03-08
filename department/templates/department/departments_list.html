@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>部门列表</title>
+</head>
+<body>
+    <button type="button" name="新建部门"><a href="{% url 'departments:department_create' %}">新建部门</a></button><br>
+    {% if departments %}
+        <table border="1">
+        <tr>
+            <th>GID</th>
+            <th>部门</th>
+            <th>备注</th>
+            <th>操作</th>
+        </tr>
+        {% for department in departments %}
+            <tr>
+                <td>{{ department.id }}</td>
+                <td>{{ department.name }}</td>
+                <td>{{ department.comment }}</td>
+                {{ department.user_set.exist }}
+                <td>
+                    <button type="button" name="修改"><a href="{% url 'departments:department_update' department.id %}">修改</a></button>
+                    <button type="button" name="删除"><a href="{% url 'departments:department_delete' department.id %}">删除</a></button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+        {% else %}
+                  <strong>No department here.</strong>
+    {% endif %}
+
+</body>
+</html>

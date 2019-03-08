@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>产品线列表</title>
+</head>
+<body>
+    <button type="button" name="新建产品线"><a href="{% url 'productlines:productline_create' %}">新建产品线</a></button><br>
+    {% if productlines %}
+        <table border="1">
+        <tr>
+            <th>PLID</th>
+            <th>产品线</th>
+            <th>所属部门</th>
+            <th>产品线管理员</th>
+            <th>操作</th>
+        </tr>
+        {% for productline in productlines %}
+            <tr>
+                <td>{{ productline.id }}</td>
+                <td>{{ productline.name }}</td>
+                <td>{{ productline.department }}</td>
+                <td>{{ productline.administrator }}</td>
+                <td>
+                    <button type="button" name="修改"><a href="{% url 'productlines:productline_update' productline.id %}">修改</a></button>
+                    <button type="button" name="删除"><a href="{% url 'productlines:productline_delete' productline.id %}">删除</a></button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+        {% else %}
+                  <strong>No productline here.</strong>
+    {% endif %}
+
+</body>
+</html>

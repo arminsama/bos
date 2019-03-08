@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>groups_list</title>
+</head>
+<body>
+    <button type="button" name="新建员工"><a href="{% url 'employees:employee_create' %}">新建员工</a></button><br>
+    {% if employees %}
+        <table border="1">
+        <tr>
+            <th>UID</th>
+            <th>用户名</th>
+            <th>全名</th>
+            <th>身份</th>
+            <th>邮箱</th>
+            <th>电话</th>
+            <th>所属产品线</th>
+        </tr>
+        {% for employee in employees %}
+            <tr>
+                <td>{{ employee.id }}</td>
+                <td>{{ employee.username }}</td>
+                <td>{{ employee.fullname }}</td>
+                {% if employee.role == 'root' %}
+                    <td>管理员</td>
+                {% elif employee.role == 'user' %}
+                    <td>普通用户</td>
+                {% endif %}
+                <td>{{ employee.email }}</td>
+                <td>{{ employee.phone }}</td>
+                <td>{{ employee.productline }}</td>
+                <td>
+                    <button type="button" name="修改"><a href="{% url 'employees:employee_update' employee.id %}">修改</a></button>
+                    <button type="button" name="删除"><a href="{% url 'employees:employee_delete' employee.id %}">删除</a></button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+        {% else %}
+                  <strong>No employee here.</strong>
+    {% endif %}
+
+</body>
+</html>

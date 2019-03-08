@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>产品详情</title>
+</head>
+<body>
+<table border="1">
+    <tr>
+        <th>产品ID</th>
+        <td>{{ product.id }}</td>
+    </tr>
+    <tr>
+        <th>产品名称</th>
+        <td>{{ product.name }}</td>
+    </tr>
+    <tr>
+        <th>产品描述</th>
+        <td>{{ product.comment }}</td>
+    </tr>
+    <tr>
+        <th>产品拥有人</th>
+        <td>
+            {% for employee in product.employees.all %}
+                <span>{{ employee.fullname }}</span>
+            {% endfor %}
+        </td>
+    </tr>
+    <tr>
+        <th>产品域名</th>
+        <td>{{ product.domain }}</td>
+    </tr>
+    <tr>
+        <th>Git地址</th>
+        <td>{{ product.git_address }}</td>
+    </tr>
+    <tr>
+        <th>线上代码目录</th>
+        <td>{{ product.product_dir }}</td>
+    </tr>
+    <tr>
+        <th>上线类型</th>
+        <td>{{ product.get_sync_type }}</td>
+    </tr>
+    <tr>
+        <th>测试机器地址</th>
+        <td>{{ product.test_ip_list }}</td>
+    </tr>
+    <tr>
+        <th>灰度机器地址</th>
+        <td>{{ product.gray_ip_list }}</td>
+    </tr>
+    <tr>
+        <th>上线机器地址</th>
+        <td>{{ product.online_ip_list }}</td>
+    </tr>
+    <tr>
+        <th>上线选项</th>
+        <td>{{ product.get_sync_option }}</td>
+    </tr>
+    <tr>
+        <th>不同步的文件或者目录</th>
+        <td>{{ product.no_sync_file_and_path }}</td>
+    </tr>
+    <tr>
+        <th>上线前需要执行的命令</th>
+        <td>{{ product.command_before_sync }}</td>
+    </tr>
+    <tr>
+        <th>上线后需要执行的命令</th>
+        <td>{{ product.command_after_sync }}</td>
+    </tr>
+    <tr>
+        <th>是否需要sa同意</th>
+        <td>{{ product.get_need_sa_agree }}</td>
+    </tr>
+    <tr>
+        <th>是否发送通知邮件</th>
+        <td>{{ product.get_send_email }}</td>
+    </tr>
+    <tr>
+        <th>是否发送通知短信</th>
+        <td>{{ product.get_send_msg }}</td>
+    </tr>
+    <tr>
+        <th>当前代码版本</th>
+        <td>{{ product.version }}</td>
+    </tr>
+    <tr>
+        <th>产品创建时间</th>
+        <td>{{ product.create_time }}</td>
+    </tr>
+    <tr>
+        <th>产品最后更新时间</th>
+        <td>{{ product.last_edit_time }}</td>
+    </tr>
+</table>
+</body>
+</html>

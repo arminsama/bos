@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>删除产品  {{ product.name }}</title>
+</head>
+<body>
+<form action="{% url 'products:product_delete' product.pk %}" method="post">
+    {% csrf_token %}
+    <p>Are you sure you want to delete "{{ product }}"?</p>
+    <button type="submit">确认</button>
+    <button type="button"><a href="{% url 'products:products_list' %}">返回产品列表</a></button>
+</form>
+</body>
+</html>

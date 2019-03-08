@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新建产品</title>
+</head>
+<body>
+{% if error %}
+    <p style="color: red"><strong>{{ error }}</strong></p>
+{% endif %}
+<form action="{% url 'products:product_create' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="reset">重置</button>
+    <button type="submit">提交</button>
+</form>
+</body>
+</html>

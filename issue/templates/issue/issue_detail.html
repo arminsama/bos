@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>提案详情</title>
+</head>
+<body>
+<table border="1">
+    <tr>
+        <th>提案ID</th>
+        <td>{{ issue.id }}</td>
+    </tr>
+    <tr>
+        <th>提案标题</th>
+        <td>{{ issue.title }}</td>
+    </tr>
+    <tr>
+        <th>提案更改内容说明</th>
+        <td>{{ issue.comment }}</td>
+    </tr>
+    <tr>
+        <th>产品名称</th>
+        <td>{{ issue.product_name }}</td>
+    </tr>
+    <tr>
+        <th>创建人</th>
+        <td>{{ issue.creator }}</td>
+    </tr>
+    <tr>
+    <th>上线审核人</th>
+        <td>{{ issue.assigner }}</td>
+    </tr>
+    <tr>
+        <th>将要上线的最新版本</th>
+        <td>{{ issue.newest_version }}</td>
+    </tr>
+    <tr>
+        <th>提案创建时间</th>
+        <td>{{ issue.create_time }}</td>
+    </tr>
+    <tr>
+        <th>最后修改时间</th>
+        <td>{{ issue.last_mtime }}</td>
+    </tr>
+    <tr>
+        <th>提案状态</th>
+        <td>{{ issue.get_status }}</td>
+    </tr>
+    <tr>
+        <th>新增的文件和文件夹</th>
+        <td>{{ issue.diff_new | linebreaks }}</td>
+    </tr>
+        <tr>
+        <th>变化的文件和文件夹</th>
+        <td>{{ issue.diff_change | linebreaks }}</td>
+    </tr>
+        <tr>
+        <th>删除的文件和文件夹</th>
+        <td>{{ issue.diff_delete | linebreaks }}</td>
+    </tr>
+    <tr>
+        <th>时间线信息</th>
+        <td>{{ issue.timeline | linebreaks }}</td>
+    </tr>
+</table>
+</body>
+</html>

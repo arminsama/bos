@@ -1,0 +1,11 @@
+amqp==2.4.1
+anyjson==0.3.3
+billiard==3.6.0.0
+celery==4.3.0rc1
+celery-with-redis==3.0
+Django==2.0.13
+django-celery==3.2.2
+kombu==4.3.0
+pytz==2018.9
+redis==3.2.0
+vine==1.2.0

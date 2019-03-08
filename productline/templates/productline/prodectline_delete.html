@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>删除产品线 {{ productline.name }}</title>
+</head>
+<body>
+<form action="{% url 'productlines:productline_delete' productline.pk %}" method="post">
+    {% csrf_token %}
+    <p>Are you sure you want to delete "{{ object }}"?</p>
+    <button type="submit">确认</button>
+    <button type="button"><a href="{% url 'productlines:productlines_list' %}">返回首页</a></button>
+</form>
+</body>
+</html>

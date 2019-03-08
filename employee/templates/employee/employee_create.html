@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新建员工</title>
+</head>
+<body>
+<form action="{% url 'employees:employee_create' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">提交</button>
+    <button type="reset">重置</button>
+</form>
+</body>
+</html>

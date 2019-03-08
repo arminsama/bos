@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>更新 {{ product.name }}</title>
+</head>
+<body>
+{% if ip_check_error %}
+    <p style="color: red"><strong>{{ ip_check_error }}</strong></p>
+{% endif %}
+{% if rsyncd_config_change_error %}
+    <p style="color: red"><strong>{{ rsyncd_config_change_error }}</strong></p>
+{% endif %}
+
+<form action="{% url 'products:product_update' product.pk %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="reset">重置</button>
+    <button type="submit">提交</button>
+</form>
+</body>
+</html>

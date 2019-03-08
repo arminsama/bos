@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>删除部门 {{ department.name }}</title>
+</head>
+<body>
+<form action="{% url 'departments:department_delete' department.pk %}" method="post">
+    {% csrf_token %}
+    <p>Are you sure you want to delete "{{ object }}"?</p>
+    <button type="submit">确认</button>
+    <button type="button"><a href="{% url 'departments:departments_list' %}">返回首页</a></button>
+</form>
+</body>
+</html>

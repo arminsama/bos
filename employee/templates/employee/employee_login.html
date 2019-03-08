@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户登录</title>
+</head>
+<body>
+{% if error %}
+    <p><strong>{{ error }}</strong></p>
+{% endif %}
+<form action="{% url 'employees:login' %}" method="post">
+    {% csrf_token %}
+    {{ user_login_form.as_p }}
+    <input type="hidden" name="next" value="{{ next_url }}">
+    <button type="submit">登录</button>
+    <button type="reset">重置</button>
+</form>
+</body>
+</html>
