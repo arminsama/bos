@@ -154,6 +154,7 @@ def do_accept(issue):
             issue.save()
     if accept_fail_count != len(ip_list):
         Issue.objects.filter(can_rollback=True).update(can_rollback=False)
+    issue.timeline += get_now_time() + ': 上线操作执行完毕\n'
     if accept_fail_count == 0:
         # subprocess.getstatusoutput('mv %s %s' % (git_clone_code_save_fulldir, new_git_clone_code_save_fulldir))
         os.rename(git_clone_code_save_fulldir, new_git_clone_code_save_fulldir)
@@ -192,7 +193,7 @@ def do_rollback(issue):
     sync_option = product.sync_option
     git_clone_code_save_basedir = settings.GIT_CLONE_BASEDIR + product_name
     rollback_code_dir_before = git_clone_code_save_basedir + '/' + str(old_version) + '/'
-    rollback_code_dir_current = git_clone_code_save_basedir + '/' + str(old_version) + '/'
+    rollback_code_dir_current = git_clone_code_save_basedir + '/' + str(current_version) + '/'
     rollback_code_dir_become_new = git_clone_code_save_basedir + '/new/'
     shutil.copytree(rollback_code_dir_before, rollback_code_dir_become_new)
     rsync_cmd_rollback_exec = 'exit 1'
@@ -210,6 +211,7 @@ def do_rollback(issue):
             error_count += 1
             issue.timeline += get_now_time() + ': 代码回滚到[%s]失败: %s\n' % (ip, str(e))
             issue.save()
+    issue.timeline += get_now_time() + ': 回滚操作执行完毕\n'
     if error_count == 0:
         shutil.rmtree(rollback_code_dir_become_new)
         shutil.rmtree(rollback_code_dir_current)
