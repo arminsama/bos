@@ -56,7 +56,7 @@ def do_accept(issue):
     issue.timeline += get_now_time() + ': git 拉取中\n'
     issue.save()
     ## git_cmd = 'git clone' + ' ' + 'http://' + git_user + ':' + git_password + '@' + git_address + ' ' + git_clone_code_save_fulldir
-    git_cmd = 'git clone' + ' ' + git_address + ' ' + git_clone_code_save_fulldir
+    git_cmd = 'git clone' + ' ' + 'http://' + git_address + ' ' + git_clone_code_save_fulldir
     git_cmd_status, git_cmd_result = subprocess.getstatusoutput(git_cmd)
     if git_cmd_status == 0:
         issue.timeline += get_now_time() + ': git 拉取成功\n'
@@ -204,9 +204,10 @@ def do_rollback(issue):
         rsync_cmd_rollback_exec = 'rsync -abc --timeout=30 --contimeout=30 --delete-after --delay-updates --exclude-from=' + '/tmp/' + product_name + ' ' + '--password-file=' + remote_rsync_password + ' ' + 'root@' + rsync_server + '::' + product_name + ' ' + product_dir
     for ip in rollback_ip:
         try:
-            res = salt_client.cmd(ip, 'cmd.run', rsync_cmd_rollback_exec, tgt_type='ipcidr')
+            res = salt_client.cmd(ip, 'cmd.run', [rsync_cmd_rollback_exec], tgt_type='ipcidr')
             if not res:
-                raise Exception('%s: 回滚失败,请确认主机状态' % get_now_time())
+                raise Exception('回滚失败,请确认主机状态')
+            issue.timeline += get_now_time() + ': 代码回滚至[%s]成功\n' % ip
         except Exception as e:
             error_count += 1
             issue.timeline += get_now_time() + ': 代码回滚到[%s]失败: %s\n' % (ip, str(e))
@@ -231,7 +232,6 @@ def do_rollback(issue):
         return "rollback part success"
     else:
         issue.status = 17
-        issue.can_rollback = True
         issue.save()
         return "rollback fails"
     return "rollback success"

@@ -24,7 +24,7 @@ class Product(models.Model):
     ################
     employees = models.ManyToManyField(Employee, verbose_name='产品拥有人')
     domain = models.CharField(max_length=256, null=True, blank=True, verbose_name='产品域名')
-    git_address = models.URLField(unique=True, verbose_name='Git地址')
+    git_address = models.CharField(max_length=256, unique=True, verbose_name='Git地址', help_text='不带http:// or https://')
     product_dir = models.CharField(max_length=128, unique=True, verbose_name='线上代码目录')
     #   上线方式、地址选项 测试or灰度or线上
     #   sync_mode
