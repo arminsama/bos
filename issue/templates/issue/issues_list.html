@@ -1,135 +1,113 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>提案列表</title>
-</head>
-<body>
-    hello {{ request.user.fullname }}
-    <button type="button" name="新建提案"><a href="{% url 'issues:issue_create' %}">新建提案</a></button><br>
+{% extends 'base.html' %}
+
+{% block title %}
+    提案管理
+{% endblock %}
+
+{% block content-header %}提案管理{% endblock %}
+
+{% block ke_xuan_shuo_ming %}Version1.0{% endblock %}
+
+{% block here %}提案管理{% endblock %}
+
+{% block content %}
     {% if issues %}
-        <table border="1">
-        <tr>
-            <th>提案ID</th>
-            <th>提案标题</th>
-            <th>提案更改内容说明</th>
-            <th>产品名称</th>
-            <th>创建人</th>
-            <th>上线审核人</th>
-            <th>提案创建时间</th>
-            <th>提案状态</th>
-            <th>操作</th>
-        </tr>
-        {% for issue in issues %}
-            <tr>
-                <td>{{ issue.id }}</td>
-                <td>{{ issue.title }}</td>
-                <td>{{ issue.comment }}</td>
-                <td>{{ issue.product_name }}</td>
-                <td>{{ issue.creator }}</td>
-                <td>{{ issue.assigner }}</td>
-                <td>{{ issue.create_time }}</td>
-                <td>{{ issue.get_status }}</td>
-                <td>
-
-{#                    {% if issue.status == 1 %}#}
-{#                        需要sa同意 当前用户是sa#}
-{#                        {% if issue.need_sa_agree and request.user.is_sa %}#}
-{#                            <button type="button" name="确认上线"><a href="{% url 'issues:issue_accept' issue.pk %}">确认上线</a></button>#}
-{#                            <button type="button" name="驳回提案"><a href="{% url 'issues:issue_reject' issue.pk %}">驳回提案</a></button>#}
-{#                        不需要sa同意 当前用户是sa#}
-{#                        {% elif not issue.need_sa_agree and request.user.is_sa %}#}
-{#                            <button type="button" name="驳回提案"><a href="{% url 'issues:issue_reject' issue.pk %}">驳回提案</a></button>#}
-{#                        需要sa同意 当前用户不是sa#}
-{#                        {% elif issue.need_sa_agree and not request.user.is_sa %}#}
-{#                            <button type="button" name="驳回提案"><a href="{% url 'issues:issue_reject' issue.pk %}">驳回提案</a></button>#}
-{#                        不需要sa同意 当前用户不是sa#}
-{#                        {% elif not issue.need_sa_agree and not request.user.is_sa %}#}
-{#                            <button type="button" name="确认上线"><a href="{% url 'issues:issue_accept' issue.pk %}">确认上线</a></button>#}
-{#                            <button type="button" name="驳回提案"><a href="{% url 'issues:issue_reject' issue.pk %}">驳回提案</a></button>#}
-{#                        {% endif %}#}
-{#                    {% elif issue.status == 11 %}#}
-{#                        <button type="button"><a href="{% url 'issues:issue_rollback' issue.pk %}">回滚</a></button>#}
-{#                    {% endif %}#}
-                {% if issue.status == 1 %}
-                    {% if request.user.is_sa %}
-                        {% if issue.need_sa_agree and request.user in issue.product_name.employees.all %}
-                            <button type="button" name="确认上线"><a href="{% url 'issues:issue_accept' issue.pk %}">确认上线</a></button>
-{#                            <button type="button" name="驳回提案"><a href="{% url 'issues:issue_reject' issue.pk %}">驳回提案</a></button>#}
-                        {% elif issue.need_sa_agree and not request.user in issue.product_name.employees.all %}
-                            <button type="button" name="确认上线"><a href="{% url 'issues:issue_accept' issue.pk %}">确认上线</a></button>
-{#                            <button type="button" name="驳回提案"><a href="{% url 'issues:issue_reject' issue.pk %}">驳回提案</a></button>#}
-                        {% elif not issue.need_sa_agree and request.user in issue.product_name.employees.all %}
-                            <button type="button" name="确认上线"><a href="{% url 'issues:issue_accept' issue.pk %}">确认上线</a></button>
-{#                            <button type="button" name="驳回提案"><a href="{% url 'issues:issue_reject' issue.pk %}">驳回提案</a></button>#}
-{#                        {% elif not issue.need_sa_agree and not request.user in issue.product_name.employees.all %}#}
-{#                            <button type="button" name="驳回提案"><a href="{% url 'issues:issue_reject' issue.pk %}">驳回提案</a></button>#}
-                        {% endif %}
-                        <button type="button" name="驳回提案"><a href="{% url 'issues:issue_reject' issue.pk %}">驳回提案</a></button>
-                    {% elif not request.user.is_sa %}
-                        {% if issue.need_sa_agree and request.user in issue.product_name.employees.all %}
-                            <button type="button" name="驳回提案"><a href="{% url 'issues:issue_reject' issue.pk %}">驳回提案</a></button>
-{#                        {% elif issue.need_sa_agree and not request.user in issue.product_name.employees.all %}#}
-{#                            <button type="button" name="驳回提案"><a href="{% url 'issues:issue_reject' issue.pk %}">驳回提案</a></button>#}
-                        {% elif not issue.need_sa_agree and request.user in issue.product_name.employees.all %}
-                            <button type="button" name="确认上线"><a href="{% url 'issues:issue_accept' issue.pk %}">确认上线</a></button>
-                            <button type="button" name="驳回提案"><a href="{% url 'issues:issue_reject' issue.pk %}">驳回提案</a></button>
-{#                        {% elif not issue.need_sa_agree and not request.user in issue.product_name.employees.all %}#}
-                        {% endif %}
-                    {% endif %}
-                {% elif issue.can_rollback and issue.status == 11 or issue.can_rollback and issue.status == 12 %}
-                    {% if request.user.is_sa %}
-                        {% if issue.need_sa_agree and request.user in issue.product_name.employees.all %}
-                            <button type="button"><a href="{% url 'issues:issue_rollback' issue.pk %}">回滚</a></button>
-                        {% elif issue.need_sa_agree and not request.user in issue.product_name.employees.all %}
-                            <button type="button"><a href="{% url 'issues:issue_rollback' issue.pk %}">回滚</a></button>
-                        {% elif not issue.need_sa_agree and request.user in issue.product_name.employees.all %}
-                            <button type="button"><a href="{% url 'issues:issue_rollback' issue.pk %}">回滚</a></button>
-{#                        {% elif not issue.need_sa_agree and not request.user in issue.product_name.employees.all %}#}
-{#                            <button type="button" name="驳回提案"><a href="{% url 'issues:issue_reject' issue.pk %}">驳回提案</a></button>#}
-                        {% endif %}
-                    {% elif not request.user.is_sa and issue.can_rollback  %}
-                            {% if issue.need_sa_agree and request.user in issue.product_name.employees.all %}
-                                <button type="button"><a href="{% url 'issues:issue_rollback' issue.pk %}">回滚</a></button>
-{#                           {% elif issue.need_sa_agree and not request.user in issue.product_name.employees.all %}#}
-{#                                <button type="button" name="驳回提案"><a href="{% url 'issues:issue_reject' issue.pk %}">驳回提案</a></button>#}
-                            {% elif not issue.need_sa_agree and request.user in issue.product_name.employees.all %}
-                                <button type="button"><a href="{% url 'issues:issue_rollback' issue.pk %}">回滚</a></button>
-{#                          {% elif not issue.need_sa_agree and not request.user in issue.product_name.employees.all %}#}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">提案列表</h3>
+                        <small>共{{ products.count }}个产品</small>
+                        <div class="box-tools">
+                            <a href="{% url 'issues:issue_create' %}"><span class="btn btn-default">新建提案</span></a>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th style="text-align:center;vertical-align:middle;">提案编号</th>
+                                <th style="text-align:center;vertical-align:middle;">提案更改内容说明</th>
+                                <th style="text-align:center;vertical-align:middle;">产品名称</th>
+                                <th style="text-align:center;vertical-align:middle;">创建人</th>
+                                <th style="text-align:center;vertical-align:middle;">上线审核人</th>
+                                <th style="text-align:center;vertical-align:middle;">提案创建时间</th>
+                                <th style="text-align:center;vertical-align:middle;">提案状态</th>
+                                <th style="text-align:center;vertical-align:middle;">操作</th>
+                            </tr>
+                            {% for issue in issues %}
+                            <tr>
+                                <td style="text-align:center;vertical-align:middle;">{{ issue.id }}</td>
+                                <td style="text-align:center;vertical-align:middle;">{{ issue.title }}</td>
+                                <td style="text-align:center;vertical-align:middle;">{{ issue.comment }}</td>
+                                <td style="text-align:center;vertical-align:middle;">{{ issue.product_name }}</td>
+                                <td style="text-align:center;vertical-align:middle;">{{ issue.creator }}</td>
+                                <td style="text-align:center;vertical-align:middle;">{{ issue.assigner }}</td>
+                                <td style="text-align:center;vertical-align:middle;">{{ issue.create_time }}</td>
+                                <td style="text-align:center;vertical-align:middle;">{{ issue.get_status }}</td>
+                                <td style="text-align:center;vertical-align:middle;">
+                                    {% if issue.status == 1 %}
+                                        {% if request.user.is_sa %}
+                                            {% if issue.need_sa_agree %}
+                                                <a href="{% url 'issues:issue_accept' issue.id %}"><span class="btn btn-success"><span class="glyphicon glyphicon-th-list"></span> 确认上线</span></a>
+                                            {% elif not issue.need_sa_agree and request.user in issue.product_name.employees.all %}
+                                                <a href="{% url 'issues:issue_accept' issue.id %}"><span class="btn btn-success"><span class="glyphicon glyphicon-th-list"></span> 确认上线</span></a>
+                                            {% endif %}
+                                            <a href="{% url 'issues:issue_reject' issue.id %}"><span class="btn btn-success"><span class="glyphicon glyphicon-th-list"></span> 驳回提案</span></a>
+                                        {% elif not request.user.is_sa %}
+                                            {% if issue.need_sa_agree and request.user in issue.product_name.employees.all %}
+                                                <a href="{% url 'issues:issue_reject' issue.id %}"><span class="btn btn-success"><span class="glyphicon glyphicon-th-list"></span> 驳回提案</span></a>
+                                            {% elif not issue.need_sa_agree and request.user in issue.product_name.employees.all %}
+                                                <a href="{% url 'issues:issue_reject' issue.id %}"><span class="btn btn-success"><span class="glyphicon glyphicon-th-list"></span> 驳回提案</span></a>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% elif issue.can_rollback and issue.status == 11 or issue.can_rollback and issue.status == 12 %}
+                                        {% if request.user.is_sa %}
+                                            {% if issue.need_sa_agree %}
+                                                <a href="{% url 'issues:issue_rollback' issue.id %}"><span class="btn btn-success"><span class="glyphicon glyphicon-th-list"></span> 回滚提案</span></a>
+                                            {% elif not issue.need_sa_agree and request.user in issue.product_name.employees.all %}
+                                                <a href="{% url 'issues:issue_rollback' issue.id %}"><span class="btn btn-success"><span class="glyphicon glyphicon-th-list"></span> 回滚提案</span></a>
+                                            {% endif %}
+                                        {% elif not request.user.is_sa %}
+                                            {% if request.user in issue.product_name.employees.all %}
+                                                <a href="{% url 'issues:issue_rollback' issue.id %}"><span class="btn btn-success"><span class="glyphicon glyphicon-th-list"></span> 回滚提案</span></a>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                    <a href="{% url 'issues:issue_detail' issue.id %}"><span class="btn btn-success"><span class="glyphicon glyphicon-th-list"></span> 提案详情</span></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    {% if is_paginated %}
+                    <div class="box-footer clearfix">
+                    <span>当前在{{ page_obj.number }}页,共有{{ page_obj.paginator.num_pages }}页</span>
+                        <ul class="pagination pagination-flat no-margin pull-right">
+                            {% if page_obj.number != 1 %}
+                                <li><a href="?page=1">«</a></li>
+                            {% else %}
+                                <li><a href="#" class="disabled">«</a></li>
                             {% endif %}
+                            {% for page in page_range %}
+                            {% if page_obj.number != page %}
+                                <li><a href="?page={{ page }}">{{ page }}</a></li>
+                            {% else %}
+                                <li><a href="#" class="disabled">{{ page }}</a></li>
+                            {% endif %}
+                            {% endfor %}
+                            {% if page_obj.number != page_obj.paginator.num_pages %}
+                                <li><a href="?page={{ page_obj.paginator.num_pages }}">»</a></li>
+                            {% else %}
+                                <li><a href="#" class="disabled">»</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
                     {% endif %}
-                {% endif %}
-                <button type="button" name="详情"><a href="{% url 'issues:issue_detail' issue.id %}">详情</a></button>
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
-        {% else %}
-                  <strong>No issue here.</strong>
-    {% endif %}
-
-
-{% if is_paginated %}
-    <span>共{{ page_obj.paginator.count }}个提案,当前在{{ page_obj.number }}页,共有{{ page_obj.paginator.num_pages }}页</span>
-    {% if page_obj.number != 1 %}
-        <li><a href="?page=1">|<</a></li>
+                </div>
+            </div>
+        </div>
     {% else %}
-        <li>|<|</li>
+        <p>没有提案，请新建提案:<a href="{% url 'products:product_create' %}" class="btn btn-default">新建提案</a></p>
     {% endif %}
+{% endblock %}
 
-    {% for page in page_range %}
-        {% if page_obj.number != page %}
-            <li><a href="?page={{ page }}">{{ page }}</a></li>
-        {% else %}
-            <li>{{ page }}</li>
-        {% endif %}
-    {% endfor %}
-
-    {% if page_obj.number != page_obj.paginator.num_pages %}
-        <li><a href="?page={{ page_obj.paginator.num_pages }}">>|</a></li>
-    {% else %}
-        <li>|>|</li>
-    {% endif %}
-{% endif %}
-</body>
-</html>

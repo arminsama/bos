@@ -130,6 +130,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 #   app --> model ---> 改变认证模型
 AUTH_USER_MODEL = 'employee.Employee'
@@ -171,6 +174,7 @@ RSYNCD_CONFIG = '/etc/rsyncd.conf'
 RSYNC_SERVER = '192.168.201.30'
 RSYNC_SECRETS = '/etc/rsync.secrets'
 REMOTE_RSYNC_PASSWORD = '/etc/rsync.password'
+
 
 
 

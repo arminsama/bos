@@ -206,7 +206,7 @@ def do_rollback(issue):
         try:
             res = salt_client.cmd(ip, 'cmd.run', [rsync_cmd_rollback_exec], tgt_type='ipcidr')
             if not res:
-                raise Exception('回滚失败,请确认主机状态')
+                raise Exception('请确认主机状态')
             issue.timeline += get_now_time() + ': 代码回滚至[%s]成功\n' % ip
         except Exception as e:
             error_count += 1
@@ -226,12 +226,12 @@ def do_rollback(issue):
         shutil.rmtree(rollback_code_dir_current)
         product.version = old_version
         product.save()
-        issue.status = 15
+        issue.status = 17
         issue.can_rollback = False
         issue.save()
         return "rollback part success"
     else:
-        issue.status = 17
+        issue.status = 15
         issue.save()
         return "rollback fails"
     return "rollback success"

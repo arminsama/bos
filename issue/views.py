@@ -16,7 +16,7 @@ class IssueListView(LoginRequiredMixin, ListView):
     model = Issue
     template_name = 'issue/issues_list.html'
     context_object_name = 'issues'
-    paginate_by = 5
+    paginate_by = 10
     page_kwarg = 'page'
     ordering = ['-id']
 
@@ -54,6 +54,7 @@ class IssueListView(LoginRequiredMixin, ListView):
         kwargs = super().get_context_data(**kwargs)
         #   获取get_paginator() 获取的页面范围
         kwargs['page_range'] = self.page_range
+        kwargs['current_flag'] = 'issue'
         return kwargs
 
 

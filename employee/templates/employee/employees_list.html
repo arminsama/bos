@@ -1,45 +1,86 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>groups_list</title>
-</head>
-<body>
-    <button type="button" name="新建员工"><a href="{% url 'employees:employee_create' %}">新建员工</a></button><br>
-    {% if employees %}
-        <table border="1">
-        <tr>
-            <th>UID</th>
-            <th>用户名</th>
-            <th>全名</th>
-            <th>身份</th>
-            <th>邮箱</th>
-            <th>电话</th>
-            <th>所属产品线</th>
-        </tr>
-        {% for employee in employees %}
-            <tr>
-                <td>{{ employee.id }}</td>
-                <td>{{ employee.username }}</td>
-                <td>{{ employee.fullname }}</td>
-                {% if employee.role == 'root' %}
-                    <td>管理员</td>
-                {% elif employee.role == 'user' %}
-                    <td>普通用户</td>
-                {% endif %}
-                <td>{{ employee.email }}</td>
-                <td>{{ employee.phone }}</td>
-                <td>{{ employee.productline }}</td>
-                <td>
-                    <button type="button" name="修改"><a href="{% url 'employees:employee_update' employee.id %}">修改</a></button>
-                    <button type="button" name="删除"><a href="{% url 'employees:employee_delete' employee.id %}">删除</a></button>
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
-        {% else %}
-                  <strong>No employee here.</strong>
-    {% endif %}
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %}
+    用户管理
+{% endblock %}
+
+{% block content-header %}用户管理{% endblock %}
+
+{% block ke_xuan_shuo_ming %}Version1.0{% endblock %}
+
+{% block here %}用户管理{% endblock %}
+
+{% block content %}
+    {% if employees %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">用户列表</h3>
+                        <small>共{{ employees.count }}个用户</small>
+                        <div class="box-tools">
+                            <a href="{% url 'employees:employee_create' %}"><span class="btn btn-default">新建用户</span></a>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th style="text-align:center;vertical-align:middle;">用户编号</th>
+                                <th style="text-align:center;vertical-align:middle;">用户名</th>
+                                <th style="text-align:center;vertical-align:middle;">全名</th>
+                                <th style="text-align:center;vertical-align:middle;">角色</th>
+                                <th style="text-align:center;vertical-align:middle;">邮箱</th>
+                                <th style="text-align:center;vertical-align:middle;">电话</th>
+                                <th style="text-align:center;vertical-align:middle;">所属产品线</th>
+                            </tr>
+                            {% for employee in employees %}
+                            <tr>
+                                <td style="text-align:center;vertical-align:middle;">{{ employee.id }}</td>
+                                <td style="text-align:center;vertical-align:middle;">{{ employee.username }}</td>
+                                <td style="text-align:center;vertical-align:middle;">{{ employee.fullname }}</td>
+                                <td style="text-align:center;vertical-align:middle;">{{ employee.productline }}</td>
+                                {% if employee.role == 'root' %}
+                                    <td style="text-align:center;vertical-align:middle;">管理员</td>
+                                {% elif employee.role == 'user' %}
+                                    <td style="text-align:center;vertical-align:middle;">普通用户</td>
+                                {% endif %}
+                                <td style="text-align:center;vertical-align:middle;">{{ employee.email }}</td>
+                                <td style="text-align:center;vertical-align:middle;">{{ employee.phone }}</td>
+                                <td style="text-align:center;vertical-align:middle;">
+                                    <a href="{% url 'employees:employee_update' employee.id %}"><span class="btn btn-info"><span class="glyphicon glyphicon-edit"></span> 修改</span></a>
+                                    <a href="{% url 'employees:employee_update' employee.id %}"><span class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> 删除</span></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    {% if is_paginated %}
+                    <div class="box-footer clearfix">
+                        <ul class="pagination pagination-flat no-margin pull-right">
+                            {% if page_obj.number != 1 %}
+                                <li><a href="?page=1">«</a></li>
+                            {% else %}
+                                <li><a href="#" class="disabled">«</a></li>
+                            {% endif %}
+                            {% for page in page_range %}
+                            {% if page_obj.number != page %}
+                                <li><a href="?page={{ page }}">{{ page }}</a></li>
+                            {% else %}
+                                <li><a href="#" class="disabled">{{ page }}</a></li>
+                            {% endif %}
+                            {% endfor %}
+                            {% if page_obj.number != page_obj.paginator.num_pages %}
+                                <li><a href="?page={{ page_obj.paginator.num_pages }}">»</a></li>
+                            {% else %}
+                                <li><a href="#" class="disabled">»</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <p>没有用户，请新建产用户:<a href="{% url 'employees:employee_update' %}" class="btn btn-default">新建用户</a></p>
+    {% endif %}
+{% endblock %}

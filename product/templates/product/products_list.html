@@ -1,43 +1,84 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>产品列表</title>
-</head>
-<body>
-    <button type="button" name="新建产品"><a href="{% url 'products:product_create' %}">新建产品</a></button><br>
-    {% if products %}
-        <table border="1">
-        <tr>
-            <th>UID</th>
-            <th>产品名</th>
-            <th>产品拥有人</th>
-            <th>上线选项</th>
-            <th>当前版本</th>
-            <th>操作</th>
-        </tr>
-        {% for product in products %}
-            <tr>
-                <td>{{ product.id }}</td>
-                <td>{{ product.name }}</td>
-                <td>
-                    {% for employee in product.employees.all %}
-                        <span>{{ employee.fullname }}</span>
-                    {% endfor %}
-                </td>
-                <td>{{ product.sync_type }}</td>
-                <td>{{ product.version }}</td>
-                <td>
-                    <button type="button" name="详情"><a href="{% url 'products:product_detail' product.id %}">详情</a></button>
-                    <button type="button" name="修改"><a href="{% url 'products:product_update' product.id %}">修改</a></button>
-                    <button type="button" name="删除"><a href="{% url 'products:product_delete' product.id %}">删除</a></button>
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
-        {% else %}
-                  <strong>No product here.</strong>
-    {% endif %}
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %}
+    产品管理
+{% endblock %}
+
+{% block content-header %}产品管理{% endblock %}
+
+{% block ke_xuan_shuo_ming %}Version1.0{% endblock %}
+
+{% block here %}产品管理{% endblock %}
+
+{% block content %}
+    {% if products %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">产品列表</h3>
+                        <small>共{{ products.count }}个产品</small>
+                        <div class="box-tools">
+                            <a href="{% url 'products:product_create' %}"><span class="btn btn-default">新建产品</span></a>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th style="text-align:center;vertical-align:middle;">产品编号</th>
+                                <th style="text-align:center;vertical-align:middle;">产品名称</th>
+                                <th style="text-align:center;vertical-align:middle;">产品拥有人</th>
+                                <th style="text-align:center;vertical-align:middle;">上线地址选项</th>
+                                <th style="text-align:center;vertical-align:middle;">上线同步选项</th>
+                                <th style="text-align:center;vertical-align:middle;">操作</th>
+                            </tr>
+                            {% for product in products %}
+                            <tr>
+                                <td style="text-align:center;vertical-align:middle;">{{ product.id }}</td>
+                                <td style="text-align:center;vertical-align:middle;">{{ product.name }}</td>
+                                <td style="text-align:center;vertical-align:middle;">
+                                    {% for employee in product.employees.all %}
+                                        <span>（{{ employee.fullname }}）</span>
+                                    {% endfor %}
+                                </td>
+                                <td style="text-align:center;vertical-align:middle;">{{ product.get_sync_type }}</td>
+                                <td style="text-align:center;vertical-align:middle;">{{ product.get_sync_option }}</td>
+                                <td style="text-align:center;vertical-align:middle;">
+                                    <a href="{% url 'products:product_detail' product.id %}"><span class="btn btn-success"><span class="glyphicon glyphicon-th-list"></span> 详情</span></a>
+                                    <a href="{% url 'products:product_update' product.id %}"><span class="btn btn-info"><span class="glyphicon glyphicon-edit"></span> 修改</span></a>
+                                    <a href="{% url 'products:product_delete' product.id %}"><span class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> 删除</span></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    {% if is_paginated %}
+                    <div class="box-footer clearfix">
+                        <ul class="pagination pagination-flat no-margin pull-right">
+                            {% if page_obj.number != 1 %}
+                                <li><a href="?page=1">«</a></li>
+                            {% else %}
+                                <li><a href="#" class="disabled">«</a></li>
+                            {% endif %}
+                            {% for page in page_range %}
+                            {% if page_obj.number != page %}
+                                <li><a href="?page={{ page }}">{{ page }}</a></li>
+                            {% else %}
+                                <li><a href="#" class="disabled">{{ page }}</a></li>
+                            {% endif %}
+                            {% endfor %}
+                            {% if page_obj.number != page_obj.paginator.num_pages %}
+                                <li><a href="?page={{ page_obj.paginator.num_pages }}">»</a></li>
+                            {% else %}
+                                <li><a href="#" class="disabled">»</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <p>没有产品，请新建产品:<a href="{% url 'products:product_create' %}" class="btn btn-default">新建产品</a></p>
+    {% endif %}
+{% endblock %}

@@ -1,36 +1,77 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>产品线列表</title>
-</head>
-<body>
-    <button type="button" name="新建产品线"><a href="{% url 'productlines:productline_create' %}">新建产品线</a></button><br>
-    {% if productlines %}
-        <table border="1">
-        <tr>
-            <th>PLID</th>
-            <th>产品线</th>
-            <th>所属部门</th>
-            <th>产品线管理员</th>
-            <th>操作</th>
-        </tr>
-        {% for productline in productlines %}
-            <tr>
-                <td>{{ productline.id }}</td>
-                <td>{{ productline.name }}</td>
-                <td>{{ productline.department }}</td>
-                <td>{{ productline.administrator }}</td>
-                <td>
-                    <button type="button" name="修改"><a href="{% url 'productlines:productline_update' productline.id %}">修改</a></button>
-                    <button type="button" name="删除"><a href="{% url 'productlines:productline_delete' productline.id %}">删除</a></button>
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
-        {% else %}
-                  <strong>No productline here.</strong>
-    {% endif %}
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %}
+    产品线管理
+{% endblock %}
+
+{% block content-header %}产品线管理{% endblock %}
+
+{% block ke_xuan_shuo_ming %}Version1.0{% endblock %}
+
+{% block here %}产品线管理{% endblock %}
+
+{% block content %}
+    {% if productlines %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">产品线列表</h3>
+                        <small>共{{ productlines.count }}个产品线</small>
+                        <div class="box-tools">
+                            <a href="{% url 'productlines:productline_create' %}"><span class="btn btn-default">新建产品线</span></a>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th style="text-align:center;vertical-align:middle;">产品线ID</th>
+                                <th style="text-align:center;vertical-align:middle;">产品线</th>
+                                <th style="text-align:center;vertical-align:middle;">所属部门</th>
+                                <th style="text-align:center;vertical-align:middle;">产品线管理员</th>
+                                <th style="text-align:center;vertical-align:middle;">操作</th>
+                            </tr>
+                            {% for productline in productlines %}
+                            <tr>
+                                <td style="text-align:center;vertical-align:middle;">{{ productline.id }}</td>
+                                <td style="text-align:center;vertical-align:middle;">{{ productline.name }}</td>
+                                <td style="text-align:center;vertical-align:middle;">{{ productline.department }}</td>
+                                <td style="text-align:center;vertical-align:middle;">{{ productline.administrator }}</td>
+                                <td style="text-align:center;vertical-align:middle;">
+                                    <a href="{% url 'productlines:productline_update' productline.id %}"><span class="btn btn-info"><span class="glyphicon glyphicon-edit"></span> 修改</span></a>
+                                    <a href="{% url 'productlines:productline_update' productline.id %}"><span class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> 删除</span></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    {% if is_paginated %}
+                    <div class="box-footer clearfix">
+                        <ul class="pagination pagination-flat no-margin pull-right">
+                            {% if page_obj.number != 1 %}
+                                <li><a href="?page=1">«</a></li>
+                            {% else %}
+                                <li><a href="#" class="disabled">«</a></li>
+                            {% endif %}
+                            {% for page in page_range %}
+                            {% if page_obj.number != page %}
+                                <li><a href="?page={{ page }}">{{ page }}</a></li>
+                            {% else %}
+                                <li><a href="#" class="disabled">{{ page }}</a></li>
+                            {% endif %}
+                            {% endfor %}
+                            {% if page_obj.number != page_obj.paginator.num_pages %}
+                                <li><a href="?page={{ page_obj.paginator.num_pages }}">»</a></li>
+                            {% else %}
+                                <li><a href="#" class="disabled">»</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <p>没有产品线，请新建产品线:<a href="{% url 'productlines:productline_create' %}" class="btn btn-default">新建产品线</a></p>
+    {% endif %}
+{% endblock %}
