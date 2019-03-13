@@ -17,7 +17,7 @@
                 <div class="box">
                     <div class="box-header with-border">
                         <h3 class="box-title">提案列表</h3>
-                        <small>共{{ products.count }}个产品</small>
+                        <small>共{{ total_issues }}个提案</small>
                         <div class="box-tools">
                             <a href="{% url 'issues:issue_create' %}"><span class="btn btn-default">新建提案</span></a>
                         </div>
@@ -26,6 +26,7 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th style="text-align:center;vertical-align:middle;">提案编号</th>
+                                <th style="text-align:center;vertical-align:middle;">产品名称</th>
                                 <th style="text-align:center;vertical-align:middle;">提案更改内容说明</th>
                                 <th style="text-align:center;vertical-align:middle;">产品名称</th>
                                 <th style="text-align:center;vertical-align:middle;">创建人</th>
@@ -48,28 +49,28 @@
                                     {% if issue.status == 1 %}
                                         {% if request.user.is_sa %}
                                             {% if issue.need_sa_agree %}
-                                                <a href="{% url 'issues:issue_accept' issue.id %}"><span class="btn btn-success"><span class="glyphicon glyphicon-th-list"></span> 确认上线</span></a>
+                                                <a href="{% url 'issues:issue_accept' issue.id %}"><span class="btn btn-info"><span class="glyphicon glyphicon-th-list"></span> 确认上线</span></a>
                                             {% elif not issue.need_sa_agree and request.user in issue.product_name.employees.all %}
-                                                <a href="{% url 'issues:issue_accept' issue.id %}"><span class="btn btn-success"><span class="glyphicon glyphicon-th-list"></span> 确认上线</span></a>
+                                                <a href="{% url 'issues:issue_accept' issue.id %}"><span class="btn btn-info"><span class="glyphicon glyphicon-th-list"></span> 确认上线</span></a>
                                             {% endif %}
-                                            <a href="{% url 'issues:issue_reject' issue.id %}"><span class="btn btn-success"><span class="glyphicon glyphicon-th-list"></span> 驳回提案</span></a>
+                                            <a href="{% url 'issues:issue_reject' issue.id %}"><span class="btn btn-danger"><span class="glyphicon glyphicon-th-list"></span> 驳回提案</span></a>
                                         {% elif not request.user.is_sa %}
                                             {% if issue.need_sa_agree and request.user in issue.product_name.employees.all %}
-                                                <a href="{% url 'issues:issue_reject' issue.id %}"><span class="btn btn-success"><span class="glyphicon glyphicon-th-list"></span> 驳回提案</span></a>
+                                                <a href="{% url 'issues:issue_reject' issue.id %}"><span class="btn btn-danger"><span class="glyphicon glyphicon-th-list"></span> 驳回提案</span></a>
                                             {% elif not issue.need_sa_agree and request.user in issue.product_name.employees.all %}
-                                                <a href="{% url 'issues:issue_reject' issue.id %}"><span class="btn btn-success"><span class="glyphicon glyphicon-th-list"></span> 驳回提案</span></a>
+                                                <a href="{% url 'issues:issue_reject' issue.id %}"><span class="btn btn-danger"><span class="glyphicon glyphicon-th-list"></span> 驳回提案</span></a>
                                             {% endif %}
                                         {% endif %}
                                     {% elif issue.can_rollback and issue.status == 11 or issue.can_rollback and issue.status == 12 %}
                                         {% if request.user.is_sa %}
                                             {% if issue.need_sa_agree %}
-                                                <a href="{% url 'issues:issue_rollback' issue.id %}"><span class="btn btn-success"><span class="glyphicon glyphicon-th-list"></span> 回滚提案</span></a>
+                                                <a href="{% url 'issues:issue_rollback' issue.id %}"><span class="btn btn-warning"><span class="glyphicon glyphicon-th-list"></span> 回滚提案</span></a>
                                             {% elif not issue.need_sa_agree and request.user in issue.product_name.employees.all %}
-                                                <a href="{% url 'issues:issue_rollback' issue.id %}"><span class="btn btn-success"><span class="glyphicon glyphicon-th-list"></span> 回滚提案</span></a>
+                                                <a href="{% url 'issues:issue_rollback' issue.id %}"><span class="btn btn-warning"><span class="glyphicon glyphicon-th-list"></span> 回滚提案</span></a>
                                             {% endif %}
                                         {% elif not request.user.is_sa %}
                                             {% if request.user in issue.product_name.employees.all %}
-                                                <a href="{% url 'issues:issue_rollback' issue.id %}"><span class="btn btn-success"><span class="glyphicon glyphicon-th-list"></span> 回滚提案</span></a>
+                                                <a href="{% url 'issues:issue_rollback' issue.id %}"><span class="btn btn-warning"><span class="glyphicon glyphicon-th-list"></span> 回滚提案</span></a>
                                             {% endif %}
                                         {% endif %}
                                     {% endif %}

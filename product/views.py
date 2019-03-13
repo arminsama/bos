@@ -48,6 +48,7 @@ class ProductListView(RootRequiredMixin, ListView):
         #   获取get_paginator() 获取的页面范围
         kwargs['page_range'] = self.page_range
         kwargs['current_flag'] = 'product'
+        kwargs['total_products'] = Product.objects.all().count()
         return kwargs
 
 

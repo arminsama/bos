@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'product',
     'issue',
     'djcelery',
+    'about',
 ]
 
 MIDDLEWARE = [

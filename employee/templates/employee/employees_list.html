@@ -17,7 +17,7 @@
                 <div class="box">
                     <div class="box-header with-border">
                         <h3 class="box-title">用户列表</h3>
-                        <small>共{{ employees.count }}个用户</small>
+                        <small>共{{ total_employees }}个用户</small>
                         <div class="box-tools">
                             <a href="{% url 'employees:employee_create' %}"><span class="btn btn-default">新建用户</span></a>
                         </div>
@@ -48,9 +48,29 @@
                                 <td style="text-align:center;vertical-align:middle;">{{ employee.phone }}</td>
                                 <td style="text-align:center;vertical-align:middle;">
                                     <a href="{% url 'employees:employee_update' employee.id %}"><span class="btn btn-info"><span class="glyphicon glyphicon-edit"></span> 修改</span></a>
-                                    <a href="{% url 'employees:employee_update' employee.id %}"><span class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> 删除</span></a>
+                                    <a href="#" data-toggle="modal" data-target="#employee{{ employee.pk }}"><span class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> 删除</span></a>
                                 </td>
                             </tr>
+                                <div class="modal fade in" id="employee{{ employee.pk }}">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title"><span class="fa fa-warning"></span> 警告</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h5 style="text-align:center;vertical-align:middle;">确认删除 <span class="label label-danger">{{ employee.fullname }}</span> 吗?</h5>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <form action="{% url 'employees:employee_delete' employee.pk %}" method="post" >
+                                                    {% csrf_token %}
+                                                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
+                                                    <button type="submit" class="btn btn-danger">确认删除</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             {% endfor %}
                         </table>
                     </div>

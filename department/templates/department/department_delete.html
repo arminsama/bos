@@ -1,15 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>删除部门 {{ department.name }}</title>
-</head>
-<body>
-<form action="{% url 'departments:department_delete' department.pk %}" method="post">
-    {% csrf_token %}
-    <p>Are you sure you want to delete "{{ object }}"?</p>
-    <button type="submit">确认</button>
-    <button type="button"><a href="{% url 'departments:departments_list' %}">返回首页</a></button>
-</form>
-</body>
-</html>
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>删除部门 {{ department.name }}</title>#}
+{#</head>#}
+{#<body>#}
+{#<form action="{% url 'departments:department_delete' department.pk %}" method="post">#}
+{#    {% csrf_token %}#}
+{#    <p>Are you sure you want to delete "{{ object }}"?</p>#}
+{#    <button type="submit">确认</button>#}
+{#    <button type="button"><a href="{% url 'departments:departments_list' %}">返回首页</a></button>#}
+{#</form>#}
+{#</body>#}
+{#</html>#}
+
+
+<button type="button" class="btn btn-default" data-toggle="modal" data-target="#department{{ department.pk }}">默认样式弹框</button>
+    <div class="modal fade in" id="department{{ department.pk }}">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">默认弹框</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete "{{ object }}"?</p>
+                </div>
+                <div class="modal-footer">
+                    <form action="{% url 'departments:department_delete' department.pk %}" method="post" >
+                        {% csrf_token %}
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-primary">确认删除</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>

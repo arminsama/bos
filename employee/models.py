@@ -18,6 +18,7 @@ class Employee(AbstractUser):
     password = models.CharField(max_length=128, verbose_name='密码')
     productline = models.ForeignKey(ProductLine, on_delete=models.CASCADE, verbose_name='用户所属的产品线')
     is_sa = models.BooleanField(default=False, verbose_name='是否是sa')
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name='用户创建时间')
 
     @property
     def is_root(self):

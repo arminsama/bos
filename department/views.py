@@ -42,6 +42,7 @@ class DepartmentListView(RootRequiredMixin, ListView):
         #   获取get_paginator() 获取的页面范围
         kwargs['page_range'] = self.page_range
         kwargs['current_flag'] = 'department'
+        kwargs['total_departments'] = Department.objects.all().count()
         return kwargs
 
 

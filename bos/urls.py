@@ -25,4 +25,5 @@ urlpatterns = [
     path('employee/', include(('employee.urls', 'employee'), namespace='employees')),
     path('product/', include(('product.urls', 'product'), namespace='products')),
     path('issue/', include(('issue.urls', 'issue'), namespace='issues')),
+    path('about/', include(('about.urls', 'about'), namespace='about')),
 ]

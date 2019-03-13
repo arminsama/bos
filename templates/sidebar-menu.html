@@ -1,0 +1,42 @@
+{% load staticfiles %}
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside class="main-sidebar">
+
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+
+      <!-- search form (Optional) -->
+      <form action="http://www.baidu.com/s?" method="get" class="sidebar-form" target="_blank">
+        <div class="input-group">
+          <input type="text" name="wd" class="form-control" placeholder="搜索...">
+          <span class="input-group-btn">
+              <button type="submit" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+            </span>
+        </div>
+      </form>
+      <!-- /.search form -->
+
+      <!-- Sidebar Menu -->
+    <ul class="sidebar-menu" data-widget="tree">
+        <li class="header">上线管理</li>
+        <!-- Optionally, you can add icons to the links -->
+        <li {% ifequal current_flag 'issue' %}class="active"{% endifequal %}><a href="{% url 'issues:issues_list' %}"><i class="glyphicon glyphicon-list-alt"></i> <span>提案列表</span></a>
+    </ul>
+    {% if request.user.is_root %}
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="header">平台管理</li>
+            <!-- Optionally, you can add icons to the links -->
+            <li {% ifequal current_flag 'department' %}class="active"{% endifequal %}><a href="{% url 'departments:departments_list' %}"><i class="glyphicon glyphicon-menu-right"></i> <span>部门管理</span></a></li>
+            <li {% ifequal current_flag 'productline' %}class="active"{% endifequal %}><a href="{% url 'productlines:productlines_list' %}"><i class="glyphicon glyphicon-menu-right"></i> <span>产品线管理</span></a></li>
+            <li {% ifequal current_flag 'employee' %}class="active"{% endifequal %}><a href="{% url 'employees:employees_list' %}"><i class="glyphicon glyphicon-menu-right"></i> <span>用户管理</span></a></li>
+            <li {% ifequal current_flag 'product' %}class="active"{% endifequal %}><a href="{% url 'products:products_list' %}"><i class="glyphicon glyphicon-menu-right"></i> <span>产品管理</span></a></li>
+        </ul>
+    {% endif %}
+    <ul class="sidebar-menu" data-widget="tree">
+        <li class="header">关于</li>
+        <li><a href="{% url 'about:about' %}"><i class="glyphicon glyphicon-time"></i> <span>版本记录</span></a></li>
+    </ul>
+      <!-- /.sidebar-menu -->
+    </section>
+    <!-- /.sidebar -->
+  </aside>

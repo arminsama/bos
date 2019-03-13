@@ -17,7 +17,7 @@
                 <div class="box">
                     <div class="box-header with-border">
                         <h3 class="box-title">部门列表</h3>
-                        <small>共{{ departments.count }}个部门</small>
+                        <small>共{{ total_departments }}个部门</small>
                         <div class="box-tools">
                             <a href="{% url 'departments:department_create' %}"><span class="btn btn-default">新建部门</span></a>
                         </div>
@@ -37,9 +37,29 @@
                                 <td style="text-align:center;vertical-align:middle;">{{ department.comment }}</td>
                                 <td style="text-align:center;vertical-align:middle;">
                                     <a href="{% url 'departments:department_update' department.id %}"><span class="btn btn-info"><span class="glyphicon glyphicon-edit"></span> 修改</span></a>
-                                    <a href="{% url 'departments:department_update' department.id %}"><span class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> 删除</span></a>
+                                    <a href="#" data-toggle="modal" data-target="#department{{ department.pk }}"><span class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> 删除</span></a>
                                 </td>
                             </tr>
+                                <div class="modal fade in" id="department{{ department.pk }}">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title"><span class="fa fa-warning"></span> 警告</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h5 style="text-align:center;vertical-align:middle;">确认删除 <span class="label label-danger">{{ department.name }}</span> 吗?</h5>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <form action="{% url 'departments:department_delete' department.pk %}" method="post" >
+                                                    {% csrf_token %}
+                                                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
+                                                    <button type="submit" class="btn btn-danger">确认删除</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             {% endfor %}
                         </table>
                     </div>
