@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load department_tag %}
+{% block title %}
+    {{ handler }}
+{% endblock %}
+
+{% block content-header %}{{ handler }}{% endblock %}
+
+{% block ke_xuan_shuo_ming %}Version1.0{% endblock %}
+
+{% block here %}{{ handler }}{% endblock %}
+
+{% block content %}
+    <div class="box box-info">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ handler }}</h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+    {% if form_errors %}
+        {{ form_errors }}
+    {% endif %}
+        <form class="form-horizontal" action="{% url 'departments:department_create' %}" method="post">
+            {% csrf_token %}
+              <div class="box-body">
+                  {% for item in form %}
+                    <div class="form-group">
+                      {{ item | set_label_attrs:'col-md-1 control-label' }}
+                      <div class="col-md-10">
+                        {{ item }}
+                      </div>
+                    </div>
+                  {% endfor %}
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer text-center">
+                <button type="reset" class="btn btn-default">重置</button>
+                <button type="submit" class="btn btn-info">创建</button>
+              </div>
+              <!-- /.box-footer -->
+        </form>
+    </div>
+{% endblock %}

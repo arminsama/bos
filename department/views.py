@@ -48,9 +48,26 @@ class DepartmentListView(RootRequiredMixin, ListView):
 
 class DepartmentCreateView(RootRequiredMixin, CreateView):
     model = Department
-    template_name = 'department/department_create.html'
+    template_name = 'department/department_create_update.html'
     form_class = CreateUpdateDepartmentForm
     success_url = reverse_lazy('departments:departments_list')
+    form_err = ''
+
+    def form_invalid(self, form):
+        err = form.errors
+        a = err.get_json_data()
+        print(a)
+        # output = []
+        # for field, errors in self.items():
+        #     output.append('* %s' % field)
+        #     output.append('\n'.join('  * %s' % e for e in errors))
+        return super().form_invalid(form)
+
+    def get_context_data(self, **kwargs):
+        kwargs = super().get_context_data(**kwargs)
+        kwargs['handler'] = '新建部门'
+        kwargs['form_err'] = self.form_err
+        return kwargs
 
 
 class DepartmentUpdateView(RootRequiredMixin, UpdateView):
@@ -58,7 +75,12 @@ class DepartmentUpdateView(RootRequiredMixin, UpdateView):
     context_object_name = 'department'
     form_class = CreateUpdateDepartmentForm
     success_url = reverse_lazy('departments:departments_list')
-    template_name = 'department/department_update.html'
+    template_name = 'department/department_create_update.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs = super().get_context_data(**kwargs)
+        kwargs['handler'] = '部门更新'
+        return kwargs
 
 
 class DepartmentDeleteView(RootRequiredMixin, DeleteView):
